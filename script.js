@@ -7,7 +7,6 @@ let timerInterval = null;
 let totalSeconds = 0;
 let hasGameStarted = false;
 
-
 const images = [
   "images/image1.png",
   "images/image2.png",
@@ -40,6 +39,7 @@ function createCards() {
   cards.sort(() => 0.5 - Math.random());
 
   renderBoard();
+  showCards();
 }
 
 function renderBoard() {
@@ -60,17 +60,15 @@ function renderBoard() {
 
     cardElement.addEventListener("click", handleCardClick);
     board.appendChild(cardElement);
-
   });
 }
 
 function handleCardClick(event) {
-
   if (!hasGameStarted) {
     hasGameStarted = true;
     startTime();
   }
-  
+
   const index = event.currentTarget.dataset.index;
   const card = cards[index];
 
@@ -125,22 +123,49 @@ function resetGame() {
   totalSeconds = 0;
   timerDisplay.textContent = "00:00";
   hasGameStarted = false;
-
 }
 
-function startTime(){
+function startTime() {
   totalSeconds = 0;
 
-  timerInterval = setInterval(() =>{
+  timerInterval = setInterval(() => {
     totalSeconds++;
 
     const minutes = Math.floor(totalSeconds / 60);
     const seceonds = totalSeconds % 60;
 
-    const formatTime = String(minutes).padStart(2, '0')+ ":" +String(seceonds).padStart(2, '0');
+    const formatTime =
+      String(minutes).padStart(2, "0") +
+      ":" +
+      String(seceonds).padStart(2, "0");
 
     timerDisplay.textContent = formatTime;
   }, 1000);
+}
+
+/*function to show cards for three seconds on startup*/
+function showCards() {
+  const cardsElements = document.querySelectorAll(".card");
+
+  // Mostrar todas las cartas
+  cardsElements.forEach((cardEl) => {
+    const index = cardEl.dataset.index;
+    const card = cards[index];
+    card.flipped = true;
+  });
+
+  renderBoard();
+
+  // Esperar 3 segundos y luego ocultarlas
+  setTimeout(() => {
+    cardsElements.forEach((cardEl) => {
+      const index = cardEl.dataset.index;
+      const card = cards[index];
+      card.flipped = false;
+    });
+
+    renderBoard();
+  }, 3000);
 }
 
 document.getElementById("new-game").addEventListener("click", resetGame);

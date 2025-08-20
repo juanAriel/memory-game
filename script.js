@@ -17,6 +17,7 @@ const board = document.getElementById("game-board");
 const moveDisplay = document.getElementById("move-counter");
 const scoreDisplay = document.getElementById("score");
 const timerDisplay = document.getElementById("timer");
+const bestScoreDisplay = document.getElementById("best-score");
 function createCards() {
   cards = [];
 
@@ -107,6 +108,7 @@ function updateScore() {
   if (matchedPairs === images.length) {
     setTimeout(() => {
       alert("¡Felicidades, encontraste todos los pares!");
+      saveBestScoreIfNeeded();
     }, 100);
   }
 }
@@ -147,7 +149,6 @@ function startTime() {
 function showCards() {
   const cardsElements = document.querySelectorAll(".card");
 
-  // Mostrar todas las cartas
   cardsElements.forEach((cardEl) => {
     const index = cardEl.dataset.index;
     const card = cards[index];
@@ -156,7 +157,6 @@ function showCards() {
 
   renderBoard();
 
-  // Esperar 3 segundos y luego ocultarlas
   setTimeout(() => {
     cardsElements.forEach((cardEl) => {
       const index = cardEl.dataset.index;
@@ -166,6 +166,45 @@ function showCards() {
 
     renderBoard();
   }, 3000);
+}
+
+/** funcition to storage best score in local storage*/
+function bestScore() {
+  const bestScore = JSON.parse(localStorage.getItem("bestScore"));
+
+  if (bestScore) {
+    bestScoreDisplay.textContent = `🏆 Mejor: ${bestScore.moves} movimientos, ${bestScore.time}`;
+  } else {
+    bestScoreDisplay.textContent = `🏆 Mejor: -- movimientos, --:--`;
+  }
+}
+/**funtion for save best score */
+function saveBestScoreIfNeeded() {
+  const currentTime = timerDisplay.textContent;
+  const currentMoves = moveCounter;
+
+  const previous = JSON.parse(localStorage.getItem("bestScore"));
+
+  let isBetter = false;
+
+  if (!previous) {
+    isBetter = true;
+  } else {
+    if (currentMoves < previous.moves) {
+      isBetter = true;
+    } else if (currentMoves === previous.moves && currentTime < previous.time) {
+      isBetter = true;
+    }
+  }
+
+  if (isBetter) {
+    const newBest = {
+      moves: currentMoves,
+      time: currentTime,
+    };
+    localStorage.setItem("bestScore", JSON.stringify(newBest));
+    bestScoreDisplay.textContent = `🏆 Mejor: ${newBest.moves} movimientos, ${newBest.time}`;
+  }
 }
 
 document.getElementById("new-game").addEventListener("click", resetGame);

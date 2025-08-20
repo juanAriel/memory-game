@@ -21,3 +21,7 @@ body {
 .card.flipped {
   transform: rotateY(180deg);
 }
+
+.best-score{
+  margin-bottom: 24px;
+}

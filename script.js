@@ -6,6 +6,7 @@ let timerSeconds = 0;
 let timerInterval = null;
 let totalSeconds = 0;
 let hasGameStarted = false;
+let errorCount = 0 ;
 
 const images = [
   "images/image1.png",
@@ -18,6 +19,7 @@ const moveDisplay = document.getElementById("move-counter");
 const scoreDisplay = document.getElementById("score");
 const timerDisplay = document.getElementById("timer");
 const bestScoreDisplay = document.getElementById("best-score");
+const errorDisplay = document.getElementById("move-falied");
 function createCards() {
   cards = [];
 
@@ -92,6 +94,8 @@ function handleCardClick(event) {
       flippedCards = [];
       updateScore();
     } else {
+      errorCount++;
+      errorDisplay.textContent = errorCount;
       setTimeout(() => {
         flippedCards[0].flipped = false;
         flippedCards[1].flipped = false;
@@ -116,6 +120,8 @@ function updateScore() {
 function resetGame() {
   matchedPairs = 0;
   moveCounter = 0;
+  errorCount = 0;
+  errorDisplay.textContent = errorCount;
   moveDisplay.textContent = "Movimientos: 0";
   scoreDisplay.textContent = "Puntuación: 0";
   flippedCards = [];

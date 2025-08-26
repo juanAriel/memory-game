@@ -6,7 +6,7 @@ let timerSeconds = 0;
 let timerInterval = null;
 let totalSeconds = 0;
 let hasGameStarted = false;
-let errorCount = 0 ;
+let errorCount = 0;
 
 const images = [
   "images/image1.png",
@@ -64,6 +64,14 @@ function renderBoard() {
     cardElement.addEventListener("click", handleCardClick);
     board.appendChild(cardElement);
   });
+
+  VanillaTilt.init(document.querySelectorAll(".card"), {
+  max: 15,
+  speed: 400,
+  scale: 1.05,
+  glare: true,
+  "max-glare": 0.3,
+});
 }
 
 function handleCardClick(event) {

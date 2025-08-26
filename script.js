@@ -103,7 +103,7 @@ function handleCardClick(event) {
       updateScore();
     } else {
       errorCount++;
-      errorDisplay.textContent = errorCount;
+      errorDisplay.textContent = `❌Failed: ${errorCount}` ;
       setTimeout(() => {
         flippedCards[0].flipped = false;
         flippedCards[1].flipped = false;
@@ -119,7 +119,9 @@ function updateScore() {
 
   if (matchedPairs === images.length) {
     setTimeout(() => {
-      alert("¡Felicidades, encontraste todos los pares!");
+      clearInterval(timerInterval);
+      // alert("¡Felicidades, encontraste todos los pares!");
+      celebrateWin();
       saveBestScoreIfNeeded();
     }, 100);
   }
@@ -219,6 +221,14 @@ function saveBestScoreIfNeeded() {
     localStorage.setItem("bestScore", JSON.stringify(newBest));
     bestScoreDisplay.textContent = `🏆 Mejor: ${newBest.moves} movimientos, ${newBest.time}`;
   }
+}
+/**funcion de efecto de celebracion */
+function celebrateWin() {
+  confetti({
+    particleCount: 200,
+    spread: 90,
+    origin: { y: 0.6 },
+  });
 }
 
 /**mode dark */

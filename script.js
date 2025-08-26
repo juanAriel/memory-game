@@ -66,12 +66,12 @@ function renderBoard() {
   });
 
   VanillaTilt.init(document.querySelectorAll(".card"), {
-  max: 15,
-  speed: 400,
-  scale: 1.05,
-  glare: true,
-  "max-glare": 0.3,
-});
+    max: 15,
+    speed: 400,
+    scale: 1.05,
+    glare: true,
+    "max-glare": 0.3,
+  });
 }
 
 function handleCardClick(event) {
@@ -220,6 +220,24 @@ function saveBestScoreIfNeeded() {
     bestScoreDisplay.textContent = `🏆 Mejor: ${newBest.moves} movimientos, ${newBest.time}`;
   }
 }
+
+/**mode dark */
+document.getElementById("toggle-modo").addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+
+  if (document.body.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "ligth");
+  }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+});
 
 document.getElementById("new-game").addEventListener("click", resetGame);
 document.getElementById("reset-game").addEventListener("click", resetGame);
